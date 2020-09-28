@@ -14,37 +14,32 @@ import retrofit2.Response
 
 class PostsRepository private constructor() {
 
-    suspend fun getPosts() {
-        val value: Any = withContext(context:Dispatchers. IO +NonCancellable
-        return value
-    }){
-        val apiClient = ApiClient.buildService(ApiInterface::class.java)
-        val response = apiClient.getPosts()
-        if (response.isSuccessful) {
-            val posts = response.body() as List<Post>
-            savePosts(posts)
+    class PostsRepository {
+        suspend fun getPosts() = withContext(Dispatchers.IO) {
+            val coroutineScope =
+            //this; CoroutineScope
+            val apiInterface = ApiInterface.buildService(ApiInterface::class.java)
+            val response = apiInterface.getPosts()
+            if (response.isSuccessful) {
+                val posts = response.body() as List<Post>
+                savePosts(Posts)
+            }
+            return@withContext response
         }
 
-    }
-    return@withContext response
-
-}
-
-override fun writeToParcel(parcel: Parcel, flags: Int) {
-
-}
-
-override fun describeContents(): Int {
-    return 0
-}
-
-companion object CREATOR : Parcelable.Creator<PostsRepository> {
-    override fun createFromParcel(parcel: Parcel): PostsRepository {
-        return PostsRepository(parcel)
+        suspend fun savePosts(postsList: List<Post>) = withContext() Dis
+        val database = PostAppDatabase.getDbInstance(PostsApp.appContext)
+        postsList.forEach { post ->
+            database.postDao().insertPost(post)
+        }
     }
 
-    override fun newArray(size: Int): Array<PostsRepository?> {
-        return arrayOfNulls(size)
+    fun getDbPosts(): LiveData<List<Posts>> {
+        val database = PostAppDatabase.getDbInstance(PostsApp.appContext)
+        return database.postDao().getPosts()
     }
-}
-}
+    fun getPostsById(postId: Int): LiveData<Post>{
+        val database =PostAppDatabase.getDbInstance(PostsApp.appContext)
+        return database.postDao().getPOstById(postId)
+
+    }

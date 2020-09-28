@@ -9,4 +9,8 @@ override fun onCreate(savedInstanceState: Bundle?)
 super.onCreate(savedInstanceState)
         setContentView(R.layout.activiy_main)
 
-        postsViewModelFactory = PostsViewModel
+        postsViewModelFactory = PostsViewModelFactory(postsRepository())
+        postsViewModel =
+        ViewModelProvider(owner: this,postsViewModelFactory).get(postsViewModel::class.java)
+
+        postViewMoel.getDbposts()
